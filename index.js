@@ -19,7 +19,7 @@ async function run() {
         await client.connect();
         const database = client.db('travelly');
         const toursCollection = database.collection('tours');
-        const newTourCollection = database.collection("new_tour");
+        const bookingCollection = database.collection("booking");
 
         // GET API
         app.get('/tours', async (req, res) => {
@@ -49,7 +49,7 @@ async function run() {
 
         // My tours
         app.get("/myTours/:email", async (req, res) => {
-            const result = await newTourCollection.find({
+            const result = await bookingCollection.find({
                 email: req.params.email,
             }).toArray();
             res.send(result);
@@ -59,7 +59,7 @@ async function run() {
         app.delete('/tours/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
-            const result = await servicesCollection.deleteOne(query);
+            const result = await toursCollection.deleteOne(query);
             res.json(result);
         })
     }
