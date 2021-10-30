@@ -47,9 +47,9 @@ async function run() {
             res.json(result)
         });
 
-        // My events
-        app.get("/myEvents/:email", async (req, res) => {
-            const result = await EventsCollection.find({
+        // My tours
+        app.get("/myTours/:email", async (req, res) => {
+            const result = await newTourCollection.find({
                 email: req.params.email,
             }).toArray();
             res.send(result);
