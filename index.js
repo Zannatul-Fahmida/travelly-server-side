@@ -47,15 +47,13 @@ async function run() {
             res.json(result)
         });
 
-        //GET Email
-        app.get('/userTourWithEmail/:email', (req,res)=>{
-            const email = req.params.email;
-            console.log(email);
-            newTourCollection.find({email: email})
-            .toArray((err, documents)=>{
-                    res.send(documents);
-            })
-        })
+        // My events
+        app.get("/myEvents/:email", async (req, res) => {
+            const result = await EventsCollection.find({
+                email: req.params.email,
+            }).toArray();
+            res.send(result);
+        });
 
         // DELETE API
         app.delete('/tours/:id', async (req, res) => {
