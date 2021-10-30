@@ -39,10 +39,10 @@ async function run() {
 
         // POST API
         app.post('/addTours', async (req, res) => {
-            const tour = req.body;
-            console.log('hit the post api', tour);
+            const newTour = req.body;
+            console.log('hit the post api', newTour);
 
-            const result = await toursCollection.insertOne(tour);
+            const result = await toursCollection.insertOne(newTour);
             console.log(result);
             res.json(result)
         });
