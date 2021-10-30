@@ -19,6 +19,7 @@ async function run() {
         await client.connect();
         const database = client.db('travelly');
         const toursCollection = database.collection('tours');
+        const newTourCollection = database.collection("new_tour");
 
         // GET API
         app.get('/tours', async (req, res) => {
@@ -37,7 +38,7 @@ async function run() {
         })
 
         // POST API
-        app.post('/tours', async (req, res) => {
+        app.post('/addTours', async (req, res) => {
             const tour = req.body;
             console.log('hit the post api', tour);
 
@@ -45,6 +46,16 @@ async function run() {
             console.log(result);
             res.json(result)
         });
+
+        //GET Email
+        app.get('/userTourWithEmail/:email', (req,res)=>{
+            const email = req.params.email;
+            console.log(email);
+            newTourCollection.find({email: email})
+            .toArray((err, documents)=>{
+                    res.send(documents);
+            })
+        })
 
         // DELETE API
         app.delete('/tours/:id', async (req, res) => {
