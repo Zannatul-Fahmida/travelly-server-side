@@ -19,7 +19,7 @@ async function run() {
         await client.connect();
         const database = client.db('travelly');
         const toursCollection = database.collection('tours');
-        const bookingCollection = database.collection('booking');
+        const bookingCollection = database.collection("booking");
 
         // GET API
         app.get('/tours', async (req, res) => {
@@ -47,23 +47,30 @@ async function run() {
             res.json(result)
         });
 
-        // POST Booking API
-        app.post('/addBooking', async (req, res) => {
-            const newBooking = req.body;
-            console.log('hit the post api', newBooking);
-
-            const result = await bookingCollection.insertOne(newBooking);
-            console.log(result);
-            res.json(result)
-        });
-
         // DELETE API
         app.delete('/tours/:id', async (req, res) => {
             const id = req.params.id;
             const query = { _id: ObjectId(id) };
             const result = await toursCollection.deleteOne(query);
             res.json(result);
-        })
+        });
+        
+        //add order in database
+        app.post("/addBooking", (req, res) => {
+            bookingCollection.insertOne(req.body).then((result) => {
+                res.send(result);
+            });
+        });
+
+        // get all order by email query
+        app.get("/myBooking/:email", (req, res) => {
+            console.log(req.params);
+            bookingCollection
+                .find({ email: req.params.email })
+                .toArray((err, results) => {
+                    res.send(results);
+                });
+        });
     }
     finally {
         // await client.close()
