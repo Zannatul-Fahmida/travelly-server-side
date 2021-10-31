@@ -69,6 +69,15 @@ async function run() {
               .toArray((err, docs) => res.send(docs));
           });
 
+          //Update booking
+          app.patch('/update/:id', (req, res) => {
+            bookingCollection.updateOne({ _id: ObjectId(req.params.id) },
+              {
+                $set: { status: req.body.status }
+              })
+              .then(result => res.send(result.modifiedCount > 0))
+          });
+
           //Get bookings
           app.get('/bookings', (req, res) => {
             bookingCollection.find({ email: req.query.email })
