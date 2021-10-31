@@ -59,7 +59,7 @@ async function run() {
         app.get('/booking', async (req, res) => {
             const cursor = bookingCollection.find({});
             const bookings = await cursor.toArray();
-            res.send(bookings);
+            res.json(bookings);
         });
 
         //add order in database
