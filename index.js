@@ -83,7 +83,7 @@ async function run() {
             const options = { upsert: true };
             const updateDoc = {
                 $set: {
-                    status: updatedStatus.status
+                    status: updatedStatus
                 },
             };
             const result = await bookingCollection.updateOne(filter, updateDoc, options);
