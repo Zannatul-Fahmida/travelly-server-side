@@ -19,7 +19,6 @@ async function run() {
         await client.connect();
         const database = client.db('travelly');
         const toursCollection = database.collection('tours');
-        const bookingCollection = database.collection("booking");
 
         // GET API
         app.get('/tours', async (req, res) => {
@@ -47,9 +46,17 @@ async function run() {
             res.json(result)
         });
 
+        // get search events
+        app.get("/searchEvent", async (req, res) => {
+            const result = await toursCollection.find({
+                name: { $regex: req.query.search },
+            }).toArray();
+            res.send(result);
+        });
+
         // My tours
         app.get("/myTours/:email", async (req, res) => {
-            const result = await bookingCollection.find({
+            const result = await toursCollection.find({
                 email: req.params.email,
             }).toArray();
             res.send(result);
