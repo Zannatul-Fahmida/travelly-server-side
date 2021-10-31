@@ -47,14 +47,6 @@ async function run() {
             res.json(result)
         });
 
-        // DELETE API
-        app.delete('/tours/:id', async (req, res) => {
-            const id = req.params.id;
-            const query = { _id: ObjectId(id) };
-            const result = await toursCollection.deleteOne(query);
-            res.json(result);
-        });
-
         // GET Booking API
         app.get('/booking', async (req, res) => {
             const cursor = bookingCollection.find({});
@@ -75,6 +67,15 @@ async function run() {
             const result = await cursor.toArray();
             res.json(result);
         });
+        
+        // DELETE Booking
+        app.delete('/booking/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const result = await bookingCollection.deleteOne(query);
+            res.json(result);
+        });
+
     }
     finally {
         // await client.close()
