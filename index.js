@@ -63,6 +63,12 @@ async function run() {
               });
           });
 
+          //All bookings
+          app.get('/allBookings', (req, res) => {
+            bookingCollection.find({})
+              .toArray((err, docs) => res.send(docs));
+          });
+
           //Get bookings
           app.get('/bookings', (req, res) => {
             bookingCollection.find({ email: req.query.email })
