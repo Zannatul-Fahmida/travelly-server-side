@@ -54,7 +54,7 @@ async function run() {
             const result = await toursCollection.deleteOne(query);
             res.json(result);
         });
-        
+
         // GET Booking API
         app.get('/booking', async (req, res) => {
             const cursor = bookingCollection.find({});
@@ -70,13 +70,10 @@ async function run() {
         });
 
         // get all order by email query
-        app.get("/myBooking/:email", (req, res) => {
-            console.log(req.params);
-            bookingCollection
-                .find({ email: req.params.email })
-                .toArray((err, results) => {
-                    res.json(results);
-                });
+        app.get("/myBooking/:email", async (req, res) => {
+            const cursor = bookingCollection.find({ email: req.params.email });
+            const result = await cursor.toArray();
+            res.json(result);
         });
     }
     finally {
