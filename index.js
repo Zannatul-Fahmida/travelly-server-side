@@ -74,7 +74,22 @@ async function run() {
             const booked = await bookingCollection.findOne(query);
             res.json(booked);
         })
-        
+
+        //Update Status
+        app.put('/booking/:id', async (req, res) => {
+            const id = req.params.id;
+            const updatedStatus = req.body;
+            const filter = { _id: ObjectId(id) };
+            const options = { upsert: true };
+            const updateDoc = {
+                $set: {
+                    status: updatedStatus.status
+                },
+            };
+            const result = await bookingCollection.updateOne(filter, updateDoc, options);
+            res.json(result);
+        })
+
         // DELETE Booking
         app.delete('/booking/:id', async (req, res) => {
             const id = req.params.id;
