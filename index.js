@@ -65,7 +65,7 @@ async function run() {
         //add order in database
         app.post("/addBooking", (req, res) => {
             bookingCollection.insertOne(req.body).then((result) => {
-                res.send(result);
+                res.json(result);
             });
         });
 
@@ -75,7 +75,7 @@ async function run() {
             bookingCollection
                 .find({ email: req.params.email })
                 .toArray((err, results) => {
-                    res.send(results);
+                    res.json(results);
                 });
         });
     }
