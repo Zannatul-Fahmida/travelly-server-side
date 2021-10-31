@@ -28,10 +28,9 @@ async function run() {
             res.send(tours);
         });
 
-        // GET Single Service
+        // GET Single Tour
         app.get('/tours/:id', async (req, res) => {
             const id = req.params.id;
-            console.log('getting specific service', id);
             const query = { _id: ObjectId(id) };
             const tour = await toursCollection.findOne(query);
             res.json(tour);
@@ -67,6 +66,14 @@ async function run() {
             const result = await cursor.toArray();
             res.json(result);
         });
+
+        // GET Single Booking
+        app.get('/booking/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) };
+            const booked = await bookingCollection.findOne(query);
+            res.json(booked);
+        })
         
         // DELETE Booking
         app.delete('/booking/:id', async (req, res) => {
