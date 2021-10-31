@@ -19,6 +19,7 @@ async function run() {
         await client.connect();
         const database = client.db('travelly');
         const toursCollection = database.collection('tours');
+        const bookingCollection = database.collection('booking');
 
         // GET API
         app.get('/tours', async (req, res) => {
@@ -46,21 +47,29 @@ async function run() {
             res.json(result)
         });
 
-        // get search events
-        app.get("/searchEvent", async (req, res) => {
-            const result = await toursCollection.find({
-                name: { $regex: req.query.search },
-            }).toArray();
-            res.send(result);
-        });
+        // Add bookings
+        app.post('/addBooking', (req, res) => {
+            const name = req.body.name;
+            const email = req.body.email;
+            const price = req.body.price;
+            const status = req.body.status;
+        
+            bookingCollection.insertOne({ name, email, price, status })
+              .then(result => {
+                res.send(result.insertedCount > 0)
+              })
+              .catch(error => {
+                console.log(error);
+              });
+          });
 
-        // My tours
-        app.get("/myTours/:email", async (req, res) => {
-            const result = await toursCollection.find({
-                email: req.params.email,
-            }).toArray();
-            res.send(result);
-        });
+          //Get bookings
+          app.get('/bookings', (req, res) => {
+            bookingCollection.find({ email: req.query.email })
+              .toArray((err, docs) => {
+                res.send(docs)
+              })
+          });
 
         // DELETE API
         app.delete('/tours/:id', async (req, res) => {
